@@ -12,10 +12,20 @@ import qualified Data.Text          as T
 import           Numeric
 
 class Escapable a where
+  -- | Escaping suitable for text within an HTML element
+  --   (all markup within the text is converted to HTML entities).
   escapeHTML      :: a -> a
+  -- | Escaping suitable for text within an HTML attribute value;
+  --   prevents escape regardless of surrounding quotes
+  --   (encodes non-alpha-numeric text with unicode number).
   escapeAttribute :: a -> a
+  -- | Escaping suitable for a JavaScript string (escapes non-alpha-numeric
+  --   characters, using slashcodes where available and safe).
   escapeJS        :: a -> a
+  -- | Escaping suitable for CSS values; replaces non-alpha-numeric text
+  --   with unicode points.
   escapeCSS       :: a -> a
+  -- | Percent-sign encoding for URLs. /Not unicode safe!/
   escapeURL       :: a -> a
 
 instance Escapable [Char] where
